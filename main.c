@@ -21,7 +21,12 @@
 void main()
 {
 	Restart_Init();
+
 	while(1)
+	{
+		Uart_Test();
+	}
+	while(0)
 	{
 		 FP_Process();
 	}		

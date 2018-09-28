@@ -2,6 +2,7 @@
 //#include <stdio.h>
 #include "uart.h"
 #include "fp_module.h"
+#include "drive.h"
 
 char idata FPUartRxdBuf[FP_UART_RXD_BUF_SIZE];
 //char FPRxdData[FP_UART_RXD_DEAL_SIZE];
@@ -162,7 +163,14 @@ void Uart_Send(char* _data,int _len)
 }
 
 
-
+void Uart_Test()
+{
+	#if(1)
+	{
+		Uart_Send("Hello", 5);
+		System_Dly(50000);
+	}
+}
 
 
 
@@ -181,6 +189,14 @@ void Serial_Int() interrupt	4
 		_temp = SBUF;	
 	}
 
+	#if(1)
+	{
+		SBUF = _temp;
+		while(TI ==0);
+		TI =0;
+	}
+	#endif
+	
 	FPUartRxdQue.Qbuf[FPUartRxdQue.Qin] = _temp;
 	Qin = FPUartRxdQue.Qin + 1;
 	if(Qin >= FP_UART_RXD_BUF_SIZE)
