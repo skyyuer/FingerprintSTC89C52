@@ -1,4 +1,4 @@
-#include <reg51.h>
+#include <reg52.h>
 #include "drive.h"
 #include "fp_module.h"
 #include "uart.h"

@@ -7,7 +7,7 @@ typedef struct {
 	char *Qbuf;
 } UartRxdQueue_t;
 
-#define FP_UART_RXD_BUF_SIZE 20
+#define FP_UART_RXD_BUF_SIZE 50
 #define FP_UART_RXD_DEAL_SIZE 20
 
 

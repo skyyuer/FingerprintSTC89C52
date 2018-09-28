@@ -11,8 +11,6 @@ char FP_Pack_Head[6] = {0xEF,0x01,0xFF,0xFF,0xFF,0xFF};  //包头
 char FP_Get_Img[6] = {0x01,0x00,0x03,0x01,0x00,0x05};    //获取图像1
 char FP_Search[11]= {0x01,0x0,0x08,0x04,0x01,0x00,0x00,0x00,0xC8,0x00,0xD6}; //搜索
 char FP_Img_To_Buffer1[7]={0x01,0x0,0x04,0x02,0x01,0x0,0x08}; //生成char1
-char FP_Read_Save_Flag_Page0[7]= {0x01,0x0,0x04,0x1F,00,00,0x24}; //指纹存储标志位 页0
-
 
 
 FPCommMode_t FPCommMode;
@@ -99,7 +97,7 @@ void FP_CommModeTask(void)
 
 	case FPMODE_CMD_SEARCH_ALL:
 		FPCommMode.result = RESULT_WAITING;
-		FPCommMode.FP_id = FP_COMM_INVAID_ID;
+		//FPCommMode.FP_id = FP_COMM_INVAID_ID;
 		FPCommMode.x10msDly = FP_COMM_RXD_X10MS_DELAY * 2;
 		FPCommMode.IndexBak = FPMODE_CMD_SEARCH_ALL;
 		FPCommMode.Index = FPMODE_CMD_RECEIVING;
@@ -163,7 +161,7 @@ void FP_SearchAllResultProc(void)
 	pageID = ((int)FPCommMode.rxdata[10] << 8) + FPCommMode.rxdata[11];
 	score  = ((int)FPCommMode.rxdata[12] << 8) + FPCommMode.rxdata[13];
 	//返回结果不为0而且得分大于60打印出来
-	FPCommMode.FP_id = (char)pageID;
+	//FPCommMode.FP_id = (char)pageID;
 	if((score >= 60) && (0 == FPCommMode.rxdata[7]) && (7 == FPCommMode.rxdata[8]))
 	{
 		FPCommMode.Index = FPMODE_OPEN_DOOR;
@@ -189,6 +187,7 @@ void Match_init()
 void FP_Process()
 {
 	unsigned int repeat = 100;
+	 FP_UartDataInit();
 	while(repeat > 0)
 	{
 		FP_CommModeTask();

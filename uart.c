@@ -1,9 +1,9 @@
-#include <reg51.h>
-#include <stdio.h>
+#include <reg52.h>
+//#include <stdio.h>
 #include "uart.h"
 #include "fp_module.h"
 
-char FPUartRxdBuf[FP_UART_RXD_BUF_SIZE];
+char idata FPUartRxdBuf[FP_UART_RXD_BUF_SIZE];
 //char FPRxdData[FP_UART_RXD_DEAL_SIZE];
 UartRxdQueue_t FPUartRxdQue;
 static int rxlen = 0;
@@ -25,7 +25,7 @@ void FP_UartRxdTask()
 	int datalen =0;
 	int tmp =0;
 	int i = 0;
-	static char buf[50];
+	static char idata buf[50];
 	
 	if(FPUartRxdQue.Qout == FPUartRxdQue.Qin)
 	{
