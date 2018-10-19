@@ -34,6 +34,7 @@ typedef struct
   char  *rxdata;  //接收指纹信息数组
   //int rxnum;//接收数量
   //char isFinishFlag;//接收完成标志
+  char isWorkFlag;
 } FPCommMode_t;
 
 extern FPCommMode_t FPCommMode;

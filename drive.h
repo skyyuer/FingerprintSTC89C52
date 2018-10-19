@@ -7,7 +7,7 @@ void EnInt_It0(char flag);
 void System_Dly(unsigned int count);//10000ԼΪ450ms
 void Timer0Init();
 void Restart_Init();
-
+void Int0Init();
 
 
 

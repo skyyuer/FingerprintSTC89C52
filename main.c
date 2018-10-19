@@ -18,16 +18,42 @@
 * 输    入       : 无
 * 输    出    	 : 无
 *******************************************************************************/
+
+unsigned char flag = 0;
+
+
 void main()
 {
 	Restart_Init();
 
 	while(1)
 	{
+
+		System_Dly(50000);
+			System_Dly(50000);
+				System_Dly(50000);
 		Uart_Test();
 	}
-	while(0)
+	/*while(0)
 	{
-		 FP_Process();
-	}		
+		if(FPCommMode.isWorkFlag == 1)
+		{
+			 FP_Process();
+			 FPCommMode.isWorkFlag =0;
+		}
+	}*/		
 }
+
+
+
+
+void Int0()	interrupt 0		//外部中断0的中断函数
+{
+	System_Dly(1000);	 //延时消抖
+	if(P3^2==1)
+	{
+		FPCommMode.isWorkFlag = 1;
+	}
+}
+
+

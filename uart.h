@@ -13,6 +13,7 @@ typedef struct {
 
 void FP_UartDataInit();
 void FP_UartRxdTask();
+void Uart_Init_115200() ;
 void Uart_Init_9600() ;
 void Uart_Send(char* _data,int _len);
 void Uart_Test();
