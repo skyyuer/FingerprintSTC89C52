@@ -3,6 +3,10 @@
 #include "fp_module.h"
 #include "uart.h"
 
+
+
+sbit led2 = P2^1;  //D2
+sbit led3 = P2^2;  //D3
 /*void EnInt(char flag)
 {
 	if(flag == 1)
@@ -41,7 +45,21 @@ void EnInt_It0(char flag)
 	}
 }
  */
-
+void Lock_Switch()
+{
+	led2 = 1;
+	led3 = 0;
+	System_Dly(50000);
+	System_Dly(50000);
+	System_Dly(50000);
+	led2 = 0;
+	led3 = 1;
+	System_Dly(50000);
+	System_Dly(50000);
+	System_Dly(50000);
+	led2 = 0;
+	led3 = 0;
+}
 
 void Int0Init()
 {
@@ -72,10 +90,10 @@ void Timer0Init()
 
 void Restart_Init()
 {
-	//Timer0Init();
+	Timer0Init();
 	Uart_Init_9600();
 	//Uart_Init_115200();	
-	//Int0Init();
+	Int0Init();
 }
 
 

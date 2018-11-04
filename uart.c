@@ -27,13 +27,13 @@ void FP_UartRxdTask()
 	int tmp =0;
 	int i = 0;
 	static char idata buf[50];
-	
 	if(FPUartRxdQue.Qout == FPUartRxdQue.Qin)
 	{
 		return;
 	}
 
 	buf[rxlen++] = FPUartRxdQue.Qbuf[FPUartRxdQue.Qout++];
+	//Uart_Send(buf+rxlen-1,1);
 	if(FPUartRxdQue.Qout >= FP_UART_RXD_BUF_SIZE)
 	{
 		FPUartRxdQue.Qout = 0;
@@ -202,7 +202,7 @@ void Serial_Int() interrupt	4
 		_temp = SBUF;	
 	}
 
-	if(0)
+	if(1)
 	{
 		SBUF = _temp;
 		while(TI ==0);

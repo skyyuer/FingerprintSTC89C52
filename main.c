@@ -12,6 +12,11 @@
 #include "uart.h"
 #include "drive.h"
 
+
+sbit led1 = P2^0;//led D1灯
+sbit led2 = P2^1;
+sbit led3 = P2^2;
+
 /*******************************************************************************
 * 函 数 名       : main
 * 函数功能		 : 主函数
@@ -20,28 +25,30 @@
 *******************************************************************************/
 
 unsigned char flag = 0;
-
+unsigned char sign = 0;
 
 void main()
 {
 	Restart_Init();
-
-	while(1)
-	{
-
-		System_Dly(50000);
-			System_Dly(50000);
-				System_Dly(50000);
-		Uart_Test();
-	}
-	/*while(0)
+	P0 = 0x7f;
+	while(0)
 	{
 		if(FPCommMode.isWorkFlag == 1)
 		{
+			Uart_Test();
+		}
+		FPCommMode.isWorkFlag = 0;
+	}
+	while(1)
+	{
+		if(FPCommMode.isWorkFlag == 1)
+		{
+			 led2 = 0;
 			 FP_Process();
+			 led2 = 1;
 			 FPCommMode.isWorkFlag =0;
 		}
-	}*/		
+	}	
 }
 
 
@@ -50,6 +57,7 @@ void main()
 void Int0()	interrupt 0		//外部中断0的中断函数
 {
 	System_Dly(1000);	 //延时消抖
+	led1 = ~led1;
 	if(P3^2==1)
 	{
 		FPCommMode.isWorkFlag = 1;

@@ -121,6 +121,7 @@ void FP_CommModeTask(void)
 
 	case FPMODE_OPEN_DOOR:
 		FPCommMode.Index = FPMODE_HANDLE_NULL;
+		Lock_Switch();
 		break;
 
 	case FPMODE_SEARCH_FAIL:
@@ -186,13 +187,14 @@ void Match_init()
 
 void FP_Process()
 {
-	unsigned int repeat = 100;
+	unsigned int repeat = 1000;
 	 FP_UartDataInit();
+	 Match_init();
 	while(repeat > 0)
 	{
 		FP_CommModeTask();
 		FP_UartRxdTask();
 		repeat--;
-		System_Dly(100);
+		System_Dly(1000);
 	}
 }
