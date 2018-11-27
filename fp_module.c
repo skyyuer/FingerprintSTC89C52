@@ -122,6 +122,7 @@ void FP_CommModeTask(void)
 	case FPMODE_OPEN_DOOR:
 		FPCommMode.Index = FPMODE_HANDLE_NULL;
 		Lock_Switch();
+		FPCommMode.x1msDly_FP_Process = 0;
 		break;
 
 	case FPMODE_SEARCH_FAIL:
@@ -173,6 +174,7 @@ void FP_SearchAllResultProc(void)
 		FPCommMode.Index = FPMODE_HANDLE_NULL;
 		//FPCommMode.x1sDly = 100;
 		//FPCommMode.xBellFailed10msDly =100;
+		FPCommMode.x1msDly_FP_Process = 0;
 	}
 }
 

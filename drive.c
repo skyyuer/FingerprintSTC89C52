@@ -8,6 +8,9 @@
 sbit led2 = P2^1;  //D2
 sbit led3 = P2^2;  //D3
 sbit led4 = P2^3;
+sbit led5 = P2^4;
+sbit led6 = P2^5;
+
 /*void EnInt(char flag)
 {
 	if(flag == 1)
@@ -48,24 +51,24 @@ void EnInt_It0(char flag)
  */
 void Lock_Switch()
 {
-	led2 = 1;
-	led3 = 0;
+	led5 = 1;
+	led6 = 0;
 	System_Dly(50000);
 	System_Dly(50000);
 	System_Dly(50000);
-	led2 = 0;
-	led3 = 1;
+	led5 = 0;
+	led6 = 1;
 	System_Dly(50000);
 	System_Dly(50000);
 	System_Dly(50000);
-	led2 = 0;
-	led3 = 0;
+	led5 = 0;
+	led6 = 0;
 }
 
 void Int0Init()
 {
 	//设置INT0
-	IT0=0;//跳变沿出发方式(上升沿)
+	IT0=1;//跳变沿出发方式(下降沿)
 	EX0=1;//打开INT0的中断允许。	
 	EA=1;//打开总中断	
 }

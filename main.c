@@ -35,10 +35,12 @@ void main()
 	{
 		if(FPCommMode.isWorkFlag == 1)
 		{
+			//EX0=0;//关闭INT0的中断允许。
 			 led2 = 0;
 			 FP_Process();
 			 led2 = 1;
 			 FPCommMode.isWorkFlag =0;
+			 //EX0=1;//打开INT0的中断允许。
 		}
 	}
 }

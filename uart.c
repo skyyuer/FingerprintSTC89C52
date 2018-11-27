@@ -4,6 +4,10 @@
 #include "fp_module.h"
 #include "drive.h"
 
+sbit led6 = P2^5;
+sbit led7 = P2^6;
+sbit led8 = P2^7;
+
 char idata FPUartRxdBuf[FP_UART_RXD_BUF_SIZE];
 char idata FPRxdData[FP_UART_RXD_DEAL_SIZE];
 UartRxdQueue_t FPUartRxdQue;
@@ -116,10 +120,16 @@ void FP_UartRxdTask()
 					if(0 == buf[9])
 					{
 						FPCommMode.result = RESULT_OK;
+						led8 = 0;
+						System_Dly(10000);
+						led8 = 1;
 					}
 					else
 					{
 						FPCommMode.result = RESULT_FAIL;
+						led7 = 0;
+						System_Dly(10000);
+						led7 = 1;
 					}
 					break;
 					
