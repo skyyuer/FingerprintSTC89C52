@@ -3,14 +3,14 @@
 #include "uart.h"
 #include "drive.h"
 
-#define FP_COMM_GET_IMAGE1_DELAY       160  //第一次获取图像要等久一点
+#define FP_COMM_GET_IMAGE1_DELAY       4000  //第一次获取图像要等久一点
 #define FP_COMM_SEND_GET_IMAGE1_DELAY  6   //第一次获取图像发送延时，因为是循环发送
-#define FP_COMM_RXD_X10MS_DELAY        50
+#define FP_COMM_RXD_X1MS_DELAY        2000
 
-char FP_Pack_Head[6] = {0xEF,0x01,0xFF,0xFF,0xFF,0xFF};  //包头
-char FP_Get_Img[6] = {0x01,0x00,0x03,0x01,0x00,0x05};    //获取图像1
-char FP_Search[11]= {0x01,0x0,0x08,0x04,0x01,0x00,0x00,0x00,0xC8,0x00,0xD6}; //搜索
-char FP_Img_To_Buffer1[7]={0x01,0x0,0x04,0x02,0x01,0x0,0x08}; //生成char1
+char idata FP_Pack_Head[6] = {0xEF,0x01,0xFF,0xFF,0xFF,0xFF};  //包头
+char idata FP_Get_Img[6] = {0x01,0x00,0x03,0x01,0x00,0x05};    //获取图像1
+char idata FP_Search[11]= {0x01,0x0,0x08,0x04,0x01,0x00,0x00,0x00,0xC8,0x00,0xD6}; //搜索
+char idata FP_Img_To_Buffer1[7]={0x01,0x0,0x04,0x02,0x01,0x0,0x08}; //生成char1
 
 
 FPCommMode_t FPCommMode;
@@ -66,7 +66,7 @@ void FP_ModeReceiveFail(char timeout)
 
 	if(TRUE == timeout)
 	{
-	
+		FPCommMode.Index = FPMODE_HANDLE_INIT;
 	}
 }
 
@@ -81,7 +81,7 @@ void FP_CommModeTask(void)
 		
 	case FPMODE_CMD_GET_IMAGE1:
 		FPCommMode.result = RESULT_WAITING;
-		FPCommMode.x10msDly = FP_COMM_GET_IMAGE1_DELAY;
+		FPCommMode.x1msDly = FP_COMM_GET_IMAGE1_DELAY;
 		FPCommMode.IndexBak = FPMODE_CMD_GET_IMAGE1;
 		FPCommMode.Index = FPMODE_CMD_RECEIVING;
 		FP_SendConstCmd(FP_Get_Img, 6);
@@ -89,7 +89,7 @@ void FP_CommModeTask(void)
 	
 	case FPMODE_CMD_GEN_CHAR1:
 		FPCommMode.result = RESULT_WAITING;
-		FPCommMode.x10msDly = FP_COMM_RXD_X10MS_DELAY * 2;
+		FPCommMode.x1msDly = FP_COMM_RXD_X1MS_DELAY;
 		FPCommMode.IndexBak = FPMODE_CMD_GEN_CHAR1;
 		FPCommMode.Index = FPMODE_CMD_RECEIVING;
 		FP_SendConstCmd(FP_Img_To_Buffer1, 7);
@@ -98,7 +98,7 @@ void FP_CommModeTask(void)
 	case FPMODE_CMD_SEARCH_ALL:
 		FPCommMode.result = RESULT_WAITING;
 		//FPCommMode.FP_id = FP_COMM_INVAID_ID;
-		FPCommMode.x10msDly = FP_COMM_RXD_X10MS_DELAY * 2;
+		FPCommMode.x1msDly = FP_COMM_RXD_X1MS_DELAY;
 		FPCommMode.IndexBak = FPMODE_CMD_SEARCH_ALL;
 		FPCommMode.Index = FPMODE_CMD_RECEIVING;
 		FP_SendConstCmd(FP_Search, 11);
@@ -113,7 +113,7 @@ void FP_CommModeTask(void)
 		{
 			FP_ModeReceiveFail(FALSE);
 		}
-		else if(0 == FPCommMode.x10msDly) //接收超时
+		else if(0 == FPCommMode.x1msDly) //接收超时
 		{
 			FP_ModeReceiveFail(TRUE);
 		}
@@ -125,7 +125,7 @@ void FP_CommModeTask(void)
 		break;
 
 	case FPMODE_SEARCH_FAIL:
-		if(0 == FPCommMode.x10msDly)
+		if(0 == FPCommMode.x1msDly)
 		{
 			FPCommMode.Index = FPMODE_HANDLE_INIT;
 		}
@@ -166,7 +166,7 @@ void FP_SearchAllResultProc(void)
 	if((score >= 60) && (0 == FPCommMode.rxdata[7]) && (7 == FPCommMode.rxdata[8]))
 	{
 		FPCommMode.Index = FPMODE_OPEN_DOOR;
-		FPCommMode.x10msDly = 0;
+		FPCommMode.x1msDly = 0;
 	}
 	else
 	{
@@ -183,18 +183,35 @@ void Match_init()
 	FPCommMode.Index = FPMODE_HANDLE_INIT;
 }
 
+void FP_CommModeInit(void)
+{
+	FPCommMode.result = RESULT_FAIL;
+	FPCommMode.x1msDly = 0;
+	FPCommMode.IndexBak = FPMODE_HANDLE_NULL;
+	FPCommMode.rxdata = FPRxdData;
 
+}
 
 void FP_Process()
 {
-	unsigned int repeat = 1000;
+	 FPCommMode.x1msDly_FP_Process = 10000;  //10s
 	 FP_UartDataInit();
+	 FP_CommModeInit();
 	 Match_init();
-	while(repeat > 0)
+	 
+	while(FPCommMode.x1msDly_FP_Process > 0)
 	{
 		FP_CommModeTask();
+		System_Dly(10);
 		FP_UartRxdTask();
+	} 
+	/*
+	while(repeat > 0)
+	{
 		repeat--;
+		rxlenth =0;
+		FP_CommModeTask();
 		System_Dly(1000);
-	}
+		Uart_Test();
+	}  */
 }

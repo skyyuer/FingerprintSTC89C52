@@ -5,9 +5,11 @@
 #include "drive.h"
 
 char idata FPUartRxdBuf[FP_UART_RXD_BUF_SIZE];
-//char FPRxdData[FP_UART_RXD_DEAL_SIZE];
+char idata FPRxdData[FP_UART_RXD_DEAL_SIZE];
 UartRxdQueue_t FPUartRxdQue;
 static int rxlen = 0;
+unsigned char idata rx[20];
+int rxlenth = 0;
 	
 void FP_UartDataInit()
 {
@@ -23,21 +25,19 @@ void FP_UartDataInit()
 
 void FP_UartRxdTask()
 {
-	int datalen =0;
 	int tmp =0;
 	int i = 0;
-	static char idata buf[50];
+	static char idata buf[30];
 	if(FPUartRxdQue.Qout == FPUartRxdQue.Qin)
 	{
 		return;
 	}
 
 	buf[rxlen++] = FPUartRxdQue.Qbuf[FPUartRxdQue.Qout++];
-	//Uart_Send(buf+rxlen-1,1);
 	if(FPUartRxdQue.Qout >= FP_UART_RXD_BUF_SIZE)
 	{
 		FPUartRxdQue.Qout = 0;
-	}
+	}       
 	switch(rxlen)
 	{
 		case 1:  //从接收的数据里取出数据头第一字节
@@ -68,7 +68,6 @@ void FP_UartRxdTask()
 			break;
 		default:
 			tmp = ((int)buf[7] << 8) + (int)buf[8];
-			datalen = tmp;
 			while(rxlen < tmp+9)
 			{
 				if(FPUartRxdQue.Qout == FPUartRxdQue.Qin)
@@ -180,9 +179,24 @@ void Uart_Send(char* _data,int _len)
 
 void Uart_Test()
 {
-		Uart_Send("Hello", 5);
-		System_Dly(50000);
-		//System_Dly(50000);
+	int i=0;
+	
+	//unsigned char idata rx[20];
+	if(FPUartRxdQue.Qout == FPUartRxdQue.Qin)
+	{
+		//Uart_Send("a",1);
+		return;
+	}
+	while(FPUartRxdQue.Qout < FPUartRxdQue.Qin)
+	{
+		rx[i++] = FPUartRxdQue.Qbuf[FPUartRxdQue.Qout++];
+		//Uart_Send("b",1);
+	}
+	if(rx[9]==0x00)
+	{
+		FPCommMode.result = RESULT_OK;
+	}
+
 }
 
 
@@ -194,29 +208,36 @@ void Uart_Test()
 
 void Serial_Int() interrupt	4
 {
-	unsigned char _temp;
 	int Qin;
 	if(RI)
 	{
 		RI=0;	//清接收中断标志
-		_temp = SBUF;	
-	}
-
-	if(1)
+		FPUartRxdQue.Qbuf[FPUartRxdQue.Qin] = SBUF;
+		Qin = FPUartRxdQue.Qin + 1;
+		if(Qin >= FP_UART_RXD_BUF_SIZE)
+		{
+			Qin = 0;
+		}
+		if(Qin != FPUartRxdQue.Qout)
+		{
+			FPUartRxdQue.Qin = Qin;
+		}	
+	} 
+	/*if(RI)
+	{
+		RI=0;
+		rx[rxlenth++]=SBUF;
+		if(rxlenth==20)
+		{
+			rxlenth = 0;
+		}
+	}  */
+	 /*
+	if(0)
 	{
 		SBUF = _temp;
 		while(TI ==0);
 		TI =0;
-	}
+	}  */
 	
-	FPUartRxdQue.Qbuf[FPUartRxdQue.Qin] = _temp;
-	Qin = FPUartRxdQue.Qin + 1;
-	if(Qin >= FP_UART_RXD_BUF_SIZE)
-	{
-		Qin = 0;
-	}
-	if(Qin != FPUartRxdQue.Qout)
-	{
-		FPUartRxdQue.Qin = Qin;
-	}
 }	   

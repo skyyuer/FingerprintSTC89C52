@@ -28,7 +28,7 @@ typedef struct
   //int txlen;   //发送长度
   int rxlen;   //接收数据长度
   int x1msDly;
-  int x10msDly;
+  unsigned int x1msDly_FP_Process;
   FPmode_index_et Index;
   FPmode_index_et IndexBak;  //给指纹头发命令，等待接收时才用到这个
   char  *rxdata;  //接收指纹信息数组
@@ -45,10 +45,10 @@ extern FPCommMode_t FPCommMode;
 #define TRUE 0
 #define FALSE 1
 
-extern char FP_Pack_Head[6];
-extern char FP_Get_Img[6];
-extern char FP_Search[11];
-extern char FP_Img_To_Buffer1[7];
+extern char idata FP_Pack_Head[6];
+extern char idata FP_Get_Img[6];
+extern char idata FP_Search[11];
+extern char idata FP_Img_To_Buffer1[7];
 
 
 void FP_ModeReceiveOk(void);
@@ -58,6 +58,6 @@ void FP_SendConstCmd(char *txbuf, int len);
 void Match_init();
 void FP_Process();
 void FP_SearchAllResultProc(void);
-
+void FP_CommModeInit(void);
 
 #endif

@@ -31,14 +31,6 @@ void main()
 {
 	Restart_Init();
 	P0 = 0x7f;
-	while(0)
-	{
-		if(FPCommMode.isWorkFlag == 1)
-		{
-			Uart_Test();
-		}
-		FPCommMode.isWorkFlag = 0;
-	}
 	while(1)
 	{
 		if(FPCommMode.isWorkFlag == 1)
@@ -48,7 +40,7 @@ void main()
 			 led2 = 1;
 			 FPCommMode.isWorkFlag =0;
 		}
-	}	
+	}
 }
 
 

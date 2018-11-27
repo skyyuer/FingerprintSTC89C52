@@ -7,6 +7,7 @@
 
 sbit led2 = P2^1;  //D2
 sbit led3 = P2^2;  //D3
+sbit led4 = P2^3;
 /*void EnInt(char flag)
 {
 	if(flag == 1)
@@ -99,14 +100,15 @@ void Restart_Init()
 
 void Timer0() interrupt 1
 {
-	static unsigned int i;
 	TH0=0XFC;	//给定时器赋初值，定时1ms
 	TL0=0X18;
-	i++;
-	if(i==1000)
+	if(FPCommMode.x1msDly>0)
 	{
-		i=0;
 		FPCommMode.x1msDly--;
+	}
+	if(FPCommMode.x1msDly_FP_Process>0)
+	{
+		FPCommMode.x1msDly_FP_Process--;
 	}	
 }
 
