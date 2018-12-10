@@ -9,8 +9,8 @@ void Timer0Init();
 void Restart_Init();
 void Lock_Switch();
 void Int0Init();
-
-
+void Int1Init();
+void Bell_Open(int x1ms);
 
 
 

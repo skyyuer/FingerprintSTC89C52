@@ -11,7 +11,7 @@
 #include "fp_module.h"
 #include "uart.h"
 #include "drive.h"
-
+#include "i2c.h"
 
 sbit led1 = P2^0;//led D1灯
 sbit led2 = P2^1;
@@ -40,6 +40,7 @@ void main()
 			 FP_Process();
 			 led2 = 1;
 			 FPCommMode.isWorkFlag =0;
+			 FPCommMode.isSampleFlag = 0;
 			 //EX0=1;//打开INT0的中断允许。
 		}
 	}
@@ -58,4 +59,13 @@ void Int0()	interrupt 0		//外部中断0的中断函数
 	}
 }
 
+void Int1() interrupt 2
+{
+	System_Dly(1000);
+	if(P3^3==0)
+	{
+		FPCommMode.isSampleFlag = 1;
+		FPCommMode.isWorkFlag = 1;
+	}
+}
 

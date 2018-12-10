@@ -12,7 +12,7 @@ char idata FPUartRxdBuf[FP_UART_RXD_BUF_SIZE];
 char idata FPRxdData[FP_UART_RXD_DEAL_SIZE];
 UartRxdQueue_t FPUartRxdQue;
 static int rxlen = 0;
-unsigned char idata rx[20];
+//unsigned char idata rx[20];
 int rxlenth = 0;
 	
 void FP_UartDataInit()
@@ -112,6 +112,10 @@ void FP_UartRxdTask()
 				case FPMODE_CMD_GET_IMAGE1:
 				case FPMODE_CMD_GEN_CHAR1:
 				case FPMODE_CMD_SEARCH_ALL:
+				case FPMODE_CMD_GET_IMAGE2:
+				case FPMODE_CMD_GEN_CHAR2:
+				case FPMODE_CMD_REG_MODEL:
+				case FPMODE_CMD_STORE_MODEL:
 					FPCommMode.rxlen = rxlen;
 					for(i=0; i<rxlen; i++)
 					{
@@ -187,7 +191,7 @@ void Uart_Send(char* _data,int _len)
 }
 
 
-void Uart_Test()
+/*void Uart_Test()
 {
 	int i=0;
 	
@@ -208,7 +212,7 @@ void Uart_Test()
 	}
 
 }
-
+  */
 
 
 
