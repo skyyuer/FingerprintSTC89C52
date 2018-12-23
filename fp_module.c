@@ -6,7 +6,7 @@
 
 #define FP_COMM_GET_IMAGE1_DELAY       4000  //第一次获取图像要等久一点
 #define FP_COMM_SEND_GET_IMAGE1_DELAY  6   //第一次获取图像发送延时，因为是循环发送
-#define FP_COMM_RXD_X1MS_DELAY        2000
+#define FP_COMM_RXD_X1MS_DELAY        1000
 
 char idata FP_Pack_Head[6] = {0xEF,0x01,0xFF,0xFF,0xFF,0xFF};  //包头
 char idata FP_Get_Img[6] = {0x01,0x00,0x03,0x01,0x00,0x05};    //获取图像1
@@ -318,15 +318,15 @@ void FP_CommModeInit(void)
 void FP_Process()
 {
 	 FPCommMode.x1msDly_FP_Process = 10000;  //10s
-	 FP_UartDataInit();
-	 FP_CommModeInit();
+	 FP_UartDataInit();	  //串口接收数据初始化
+	 FP_CommModeInit();   //指纹流程数据初始化
 	 Match_init();
 	 
 	while(FPCommMode.x1msDly_FP_Process > 0)
 	{
-		FP_CommModeTask();
-		System_Dly(10);
-		FP_UartRxdTask();
+		FP_CommModeTask();	  //流程命令
+		System_Dly(10);	  	  
+		FP_UartRxdTask();	  //数据处理
 	} 
 	/*
 	while(repeat > 0)

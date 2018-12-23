@@ -10,7 +10,9 @@ sbit led3 = P2^2;  //D3
 sbit led4 = P2^3;
 sbit led5 = P2^4;
 sbit led6 = P2^5;
-sbit beep = P1^5;	 
+sbit beep = P1^5;	
+//sbit pin0 = P0^0;
+//sbit pin1 = P1^1; 
 /*void EnInt(char flag)
 {
 	if(flag == 1)
@@ -53,16 +55,40 @@ void Lock_Switch()
 {
 	led5 = 1;
 	led6 = 0;
-	System_Dly(50000);
-	System_Dly(50000);
-	System_Dly(50000);
-	led5 = 0;
-	led6 = 1;
-	System_Dly(50000);
+	//P0^0 = 1;
+	//P0^1 = 0;
+	//pin0 = 1;
+	//pin1 = 0;
+	//System_Dly(50000);
 	System_Dly(50000);
 	System_Dly(50000);
 	led5 = 0;
 	led6 = 0;
+	//P0^0=0;
+	//P0^1=0;
+	//pin0 = 0;
+	//pin1 = 0;
+	System_Dly(50000);
+	System_Dly(50000);
+	System_Dly(50000);
+	System_Dly(50000);
+	//System_Dly(50000);
+	//System_Dly(50000);
+	led5 = 0;
+	led6 = 1;
+	//P0^0=0;
+	//P0^1=1;
+	//pin0 = 0;
+	//pin1 = 1;
+	//System_Dly(50000);
+	System_Dly(50000);
+	System_Dly(50000);
+	led5 = 0;
+	led6 = 0;
+	//P0^0=0;
+	//P0^1=0;
+	//pin0 = 0;
+	//pin1 = 0;
 }
 
 void Int0Init()
@@ -102,6 +128,11 @@ void Timer0Init()
 
 void Restart_Init()
 {
+	//P0^0=0;
+	//P0^1=0;
+	//pin0 = 0;
+	//pin1 = 0;
+	P0 = 0x00;
 	Timer0Init();
 	Uart_Init_9600();
 	//Uart_Init_115200();	

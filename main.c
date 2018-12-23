@@ -12,27 +12,27 @@
 #include "uart.h"
 #include "drive.h"
 #include "i2c.h"
-
+#include "lcd.h"
 sbit led1 = P2^0;//led D1灯
 sbit led2 = P2^1;
 sbit led3 = P2^2;
-
+sbit led4 = P2^3;
+sbit led5 = P2^4;
+sbit led6 = P2^5;
+char xdata ma[200];
 /*******************************************************************************
 * 函 数 名       : main
 * 函数功能		 : 主函数
 * 输    入       : 无
 * 输    出    	 : 无
 *******************************************************************************/
-
-unsigned char flag = 0;
-unsigned char sign = 0;
-
 void main()
 {
 	Restart_Init();
-	P0 = 0x7f;
 	while(1)
 	{
+		led5 = 0;
+		led6 = 0;
 		if(FPCommMode.isWorkFlag == 1)
 		{
 			//EX0=0;//关闭INT0的中断允许。

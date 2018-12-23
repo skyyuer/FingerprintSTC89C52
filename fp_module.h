@@ -6,7 +6,6 @@
 typedef enum
 {
   FPMODE_HANDLE_INIT = 0x00,
-  
   FPMODE_CMD_GET_IMAGE1,   //获取指纹图像1
   FPMODE_CMD_GEN_CHAR1,    //生成特征1
   FPMODE_CMD_SEARCH_ALL,   //搜索指纹库
@@ -17,7 +16,6 @@ typedef enum
   FPMODE_CMD_RECEIVING,    //
   FPMODE_OPEN_DOOR,
   FPMODE_SEARCH_FAIL,
-  //FP_COMM_INVAID_ID,
   FPMODE_HANDLE_NULL = 0xff,
 } FPmode_index_et;
 
