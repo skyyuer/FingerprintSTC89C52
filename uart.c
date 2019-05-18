@@ -125,14 +125,14 @@ void FP_UartRxdTask()
 					{
 						FPCommMode.result = RESULT_OK;
 						led8 = 0;
-						System_Dly(10000);
+						System_Dly(5000);
 						led8 = 1;
 					}
 					else
 					{
 						FPCommMode.result = RESULT_FAIL;
 						led7 = 0;
-						System_Dly(10000);
+						System_Dly(5000);
 						led7 = 1;
 					}
 					break;

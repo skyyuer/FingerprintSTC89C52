@@ -4,9 +4,9 @@
 #include "drive.h"
 #include "i2c.h"
 
-#define FP_COMM_GET_IMAGE1_DELAY       4000  //第一次获取图像要等久一点
+#define FP_COMM_GET_IMAGE1_DELAY       500  //第一次获取图像要等久一点
 #define FP_COMM_SEND_GET_IMAGE1_DELAY  6   //第一次获取图像发送延时，因为是循环发送
-#define FP_COMM_RXD_X1MS_DELAY        1000
+#define FP_COMM_RXD_X1MS_DELAY        500
 
 char idata FP_Pack_Head[6] = {0xEF,0x01,0xFF,0xFF,0xFF,0xFF};  //包头
 char idata FP_Get_Img[6] = {0x01,0x00,0x03,0x01,0x00,0x05};    //获取图像1
@@ -220,9 +220,10 @@ void FP_CommModeTask(void)
 		break;
 
 	case FPMODE_OPEN_DOOR:
-		FPCommMode.Index = FPMODE_HANDLE_NULL;
 		Bell_Open(100);
 		Lock_Switch();
+		System_Dly(10000);
+		FPCommMode.Index = FPMODE_HANDLE_NULL;
 		FPCommMode.x1msDly_FP_Process = 0;
 		break;
 

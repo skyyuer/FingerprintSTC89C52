@@ -82,7 +82,7 @@ void Lock_Switch()
 	//pin1 = 1;
 	//System_Dly(50000);
 	System_Dly(50000);
-	System_Dly(50000);
+	//System_Dly(50000);
 	led5 = 0;
 	led6 = 0;
 	//P0^0=0;
