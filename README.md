@@ -5,3 +5,4 @@
 注：寝室是木门
 ![image](https://github.com/aloneLuhui/FingerprintSTC89C52/blob/master/image/IMG_20181220_134509_1546110718726.jpg)
 ![image](https://github.com/aloneLuhui/FingerprintSTC89C52/blob/master/image/IMG_20181226_215955.jpg)
+![image](https://github.com/aloneLuhui/FingerprintSTC89C52/blob/master/image/VID_20181228_120744.mp4)
